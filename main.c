@@ -1,5 +1,13 @@
-#include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void convert_dec_to_bin(int decimal) {
+  for (int i = 31; i >= 0; i--) {
+    int digit = (decimal >> i) & 1;
+    printf("%d", digit);
+  }
+}
 
 void decimal_to_binary() {
   printf("\nIngresa el número decimal: ");
@@ -8,10 +16,7 @@ void decimal_to_binary() {
   scanf("%d", &decimal);
 
   printf("Número en formato binario (complemento a 2): ");
-  for (int i = 31; i >= 0; i--) {
-    int digit = (decimal >> i) & 1;
-    printf("%d", digit);
-  }
+  convert_dec_to_bin(decimal);
 
   printf("\n");
 }
@@ -19,22 +24,28 @@ void decimal_to_binary() {
 void binary_to_decimal() {
   printf("\nIngresa el número binario: ");
 
-  int binary = 0;
-  scanf("%d", &binary);
+  char binary[8];
+  scanf("%s", binary);
 
   int decimal = 0;
-  for (int i = 0; i < 7; i++) {
-    int digit = (binary >> i) & 1;
-    int result = digit * pow(2, i);
-    printf("result: %d", result);
-    decimal += result;
+  for (int i = 0; i < 8; i++) {
+    decimal = decimal * 2 + (binary[i] - '0');
   }
   printf("Número binario en decimal: %d", decimal);
 
   printf("\n");
 }
 
-void random_number() {}
+void random_number() {
+  srand(time(NULL)); // initialize seed for rand()
+  int random_number =
+      rand() % (50 - 10 + 1) + 10; // get random number between 50 and 10
+  printf("\nNúmero aleatorio\n");
+  printf("Decimal: %d\n", random_number);
+  printf("Binario: ");
+  convert_dec_to_bin(random_number);
+  printf("\n");
+}
 
 void show_menu() {
   printf("1. Convertir número decimal a binario\n");
@@ -57,6 +68,9 @@ int main() {
     binary_to_decimal();
   } else if (option == 3) {
     random_number();
+  } else {
+    printf("Elige una opción válida\n");
+    return 1;
   }
 
   return 0;
